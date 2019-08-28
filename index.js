@@ -7,9 +7,9 @@ app.set("port", process.env.PORT || 5000);
 app.use(express.static(__dirname + "/public"));
 
 app.get("/", function(req, res) {
-  root(res);
+  res.status(200).json({ id: "1" });
 });
 
-app.listen(app.get("port"), function() {
+app.listen(app.get("port"), () => {
   console.log("Node app is running at localhost:" + app.get("port"));
 });
