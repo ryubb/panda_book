@@ -1,19 +1,44 @@
 {
   "name": "panda_book",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "node app"
+    "start": "node ./node/app & react-scripts start ",
+    "start:node": "node ./node/app",
+    "lint": "./**/*.js",
+    "start:front": "react-scripts start ./react/public",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "author": "ryubb <ryubb1108@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "babel-eslint": "10.0.2",
     "body-parser": "^1.19.0",
     "bug": "^1.2.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-react": "^7.14.3",
     "express": "^4.17.1",
     "http": "^0.0.0",
     "mongodb": "^3.3.1",
     "path": "^0.12.7",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
