@@ -3,10 +3,16 @@ html(lang="ja")
   head
     meta(charaset="utf-8")
   body
-    h1 投稿一覧
-    section
-      each msg in messages
+    h1 トップページ
+    if loginUser
+      div
+        p ようこそ！
+    else
+      div
+        a(href="/signin") ユーザー登録
+        a(href="/login") ログイン
+    h2 ユーザー一覧
+    div
+      each user in users
         div
-          h2 #{msg.username}
-          time #{msg.date}
-          p #{msg.message}
+          p #{user.username}
