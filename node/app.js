@@ -18,6 +18,14 @@ mongoose.connect("mongodb://localhost:27017/chatapp", err => {
   if (err) {
     console.log(err);
   } else {
+    // ここにMockユーザーを入れれそう
+    const newUser = new User({
+      username: "ryubb",
+      password: "ryubb"
+    });
+    newUser.save(err => {
+      if (err) throw err;
+    });
     console.log("successfully connected to MongoDB.");
   }
 });
@@ -32,7 +40,7 @@ app.use(passport.session());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   User.find({}, (err, users) => {
     if (err) throw err;
     return res.render("index", {
@@ -42,18 +50,18 @@ app.get("/", (req, res, next) => {
   });
 });
 
-app.get("/messages", (req, res, next) => {
+app.get("/messages", (req, res) => {
   Message.find({}, (err, msgs) => {
     if (err) throw err;
     return res.status(200).json({ msgs });
   });
 });
 
-app.get("/signin", (req, res, next) => {
+app.get("/signin", (req, res) => {
   return res.render("signin");
 });
 
-app.post("/signin", (req, res, next) => {
+app.post("/signin", (req, res) => {
   const newUser = new User({
     username: req.body.username,
     password: req.body.password
@@ -64,11 +72,11 @@ app.post("/signin", (req, res, next) => {
   });
 });
 
-app.get("/login", (req, res, next) => {
+app.get("/login", (req, res) => {
   return res.render("login");
 });
 
-app.post("/login", passport.authenticate("local"), (req, res, next) => {
+app.post("/login", passport.authenticate("local"), (req, res) => {
   User.findOne({ _id: req.session.passport.user }, (err, user) => {
     if (err || !req.session) return res.redirect("/login");
 
@@ -111,14 +119,14 @@ passport.deserializeUser((id, done) => {
 });
 
 // 本の一覧API
-app.get("/books", (req, res, next) => {
+app.get("/books", (req, res) => {
   Message.find({}, (err, msgs) => {
     if (err) throw err;
     return res.status(200).json({ msgs });
   });
 });
 
-app.post("/post_book", (req, res, next) => {
+app.post("/post_book", (req, res) => {
   const newBook = new Book({
     title: req.body.title,
     author: req.body.author,
