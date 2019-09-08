@@ -4,35 +4,84 @@ const nameList = ["田村", "山田", "中山", "佐藤", "佐々木", "吉田"]
 const ageList = [30, 31, 37, 23, 33, 35];
 const salaryList = [400000, 350000, 300000, 250000, 350000, 350000];
 
-for (let i = 1; i <= 6; i += 1) {
-  let employee = {
-    employeeID: "emp00" + i,
-    divisitionID: "ka00" + i,
-    positionID: "yaku00" + i,
-    employeeName: nameList[i - 1],
-    age: ageList[i - 1],
-    salary: salaryList[i - 1]
-  };
-  DB1.employee.save(employee);
-}
+const employee1 = {
+  employeeID: "emp001",
+  divisionID: "ka001",
+  positionID: "yaku001",
+  employeeName: nameList[0],
+  age: ageList[0],
+  salary: salaryList[0]
+};
+
+const employee2 = {
+  employeeID: "emp002",
+  divisionID: "ka001",
+  positionID: "yaku002",
+  employeeName: nameList[1],
+  age: ageList[1],
+  salary: salaryList[1]
+};
+
+const employee3 = {
+  employeeID: "emp003",
+  divisionID: "ka002",
+  positionID: "yaku003",
+  employeeName: nameList[2],
+  age: ageList[2],
+  salary: salaryList[2]
+};
+
+const employee4 = {
+  employeeID: "emp004",
+  divisionID: "ka002",
+  positionID: "yaku004",
+  employeeName: nameList[3],
+  age: ageList[3],
+  salary: salaryList[3]
+};
+
+const employee5 = {
+  employeeID: "emp005",
+  divisionID: "ka003",
+  positionID: "yaku002",
+  employeeName: nameList[4],
+  age: ageList[4],
+  salary: salaryList[4]
+};
+
+const employee6 = {
+  employeeID: "emp006",
+  divisionID: "ka004",
+  positionID: "yaku002",
+  employeeName: nameList[5],
+  age: ageList[5],
+  salary: salaryList[5]
+};
+
+DB1.employee.save(employee1);
+DB1.employee.save(employee2);
+DB1.employee.save(employee3);
+DB1.employee.save(employee4);
+DB1.employee.save(employee5);
+DB1.employee.save(employee6);
 
 const division1 = {
-  divisitionID: "ka001",
+  divisionID: "ka001",
   departmentID: "bu001",
   divisitionName: "営業１課"
 };
 const division2 = {
-  divisitionID: "ka002",
+  divisionID: "ka002",
   departmentID: "bu002",
   divisitionName: "営業２課"
 };
 const division3 = {
-  divisitionID: "ka003",
+  divisionID: "ka003",
   departmentID: "bu003",
   divisitionName: "企画課"
 };
 const division4 = {
-  divisitionID: "ka004",
+  divisionID: "ka004",
   departmentID: "bu004",
   divisitionName: "経理課"
 };

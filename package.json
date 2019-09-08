@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./node/app & react-scripts start ",
-    "start:node": "node ./node/app",
+    "start:node": "DEBUG=my-application ./node/bin/www",
+    "start:node:replace": "node ./node_replace/app",
     "lint": "./**/*.js",
     "start:front": "react-scripts start ./react/public",
     "build": "react-scripts build",
@@ -30,7 +31,12 @@
     "pug": "^2.0.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1"
+    "react-scripts": "3.1.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   },
   "browserslist": {
     "production": [

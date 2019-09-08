@@ -1,16 +1,20 @@
-"user strict";
-const http = require("http");
+const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const bodyparser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 
+const indexRouter = require("./routes/index");
+const loginRouter = require("./routes/login");
+const usersRouter = require("./routes/users");
+const sakeRouter = require("./routes/sake");
+const timelineRouter = require("./routes/timeline");
+
 const User = require("./schema/User");
-const Book = require("./schema/Book");
-const Message = require("./schema/Message");
 
 const app = express();
 
@@ -19,79 +23,33 @@ mongoose.connect("mongodb://localhost:27017/chatapp", err => {
     console.log(err);
   } else {
     // ここにMockユーザーを入れれそう
-    const newUser = new User({
-      username: "ryubb",
-      password: "ryubb"
-    });
-    newUser.save(err => {
-      if (err) throw err;
-    });
     console.log("successfully connected to MongoDB.");
   }
 });
 
-app.use(bodyparser());
-
-app.use(session({ secret: "HogeFuga" }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// pugの設定
+// view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.get("/", (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) throw err;
-    return res.render("index", {
-      users: users,
-      loginUser: req.session && req.session.user ? req.session.user : null
-    });
-  });
-});
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(session({ secret: "hoge" }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/messages", (req, res) => {
-  Message.find({}, (err, msgs) => {
-    if (err) throw err;
-    return res.status(200).json({ msgs });
-  });
-});
-
-app.get("/signin", (req, res) => {
-  return res.render("signin");
-});
-
-app.post("/signin", (req, res) => {
-  const newUser = new User({
-    username: req.body.username,
-    password: req.body.password
-  });
-  newUser.save(err => {
-    if (err) throw err;
-    return res.redirect("/");
-  });
-});
-
-app.get("/login", (req, res) => {
-  return res.render("login");
-});
-
-app.post("/login", passport.authenticate("local"), (req, res) => {
-  User.findOne({ _id: req.session.passport.user }, (err, user) => {
-    if (err || !req.session) return res.redirect("/login");
-
-    req.session.user = {
-      username: user.username
-    };
-    return res.redirect("/");
-  });
-});
+app.use("/", indexRouter);
+app.use("/", loginRouter);
+app.use("/users", usersRouter);
+app.use("/timelines", timelineRouter);
+// リレーションのサンプルあり
+app.use("/sake", sakeRouter);
 
 passport.use(
   new LocalStrategy((username, password, done) => {
     User.findOne({ username: username }, (err, user) => {
-      console.log("passport");
-      console.log(user);
       if (err) {
         return done(err);
       }
@@ -103,6 +61,7 @@ passport.use(
       if (user.password !== password) {
         return done(null, false, { message: "Incorrect password." });
       }
+      console.log(`ログインユーザー${user.username}`);
       return done(null, user);
     });
   })
@@ -118,28 +77,20 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-// 本の一覧API
-app.get("/books", (req, res) => {
-  Message.find({}, (err, msgs) => {
-    if (err) throw err;
-    return res.status(200).json({ msgs });
-  });
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-app.post("/post_book", (req, res) => {
-  const newBook = new Book({
-    title: req.body.title,
-    author: req.body.author,
-    lender: req.body.lender,
-    summay: req.body.lender,
-    genre: req.body.genre
-  });
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  newBook.save(err => {
-    if (err) throw err;
-    return res.status(200).json({ result: true });
-  });
+  // render the error page
+  res.status(err.status || 500);
+  res.render("error");
 });
 
-const server = http.createServer(app);
-server.listen("5000");
+module.exports = app;
