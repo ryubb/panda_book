@@ -13,6 +13,7 @@ const loginRouter = require("./routes/login");
 const usersRouter = require("./routes/users");
 const sakeRouter = require("./routes/sake");
 const timelineRouter = require("./routes/timeline");
+const apiRouter = require("./routes/api/apiRouter");
 
 const User = require("./schema/User");
 
@@ -25,6 +26,16 @@ mongoose.connect("mongodb://localhost:27017/chatapp", err => {
     // ここにMockユーザーを入れれそう
     console.log("successfully connected to MongoDB.");
   }
+});
+
+// CORSを許可する
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
 });
 
 // view engine setup
@@ -46,6 +57,7 @@ app.use("/users", usersRouter);
 app.use("/timelines", timelineRouter);
 // リレーションのサンプルあり
 app.use("/sake", sakeRouter);
+app.use("/api", apiRouter);
 
 passport.use(
   new LocalStrategy((username, password, done) => {
