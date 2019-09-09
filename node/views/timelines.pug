@@ -8,7 +8,7 @@ html(lang="ja")
     div
       each timeline in timelines
         p #{timeline.content}
-        p #{timeline.user_id.username}
+        p #{timeline.user && timeline.user.name}
     h3 投稿
     div
       form(action="/timelines/post", method="POST")

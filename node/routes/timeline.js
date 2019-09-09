@@ -6,7 +6,7 @@ const Timeline = require("../schema/Timeline");
 
 router.get("/", function(req, res, next) {
   Timeline.find({})
-    .populate("user_id")
+    .populate("user")
     .exec((err, result) => {
       if (err) throw err;
       res.render("timelines", { timelines: result });
@@ -20,7 +20,7 @@ router.post("/post", function(req, res, next) {
     console.log(result);
     const timeline = new Timeline({
       content: req.body.content,
-      user_id: result._id
+      user: result._id
     });
 
     timeline.save(err => {

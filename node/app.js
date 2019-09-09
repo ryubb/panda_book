@@ -49,7 +49,7 @@ app.use("/sake", sakeRouter);
 
 passport.use(
   new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
+    User.findOne({ name: username }, (err, user) => {
       if (err) {
         return done(err);
       }
@@ -61,7 +61,7 @@ passport.use(
       if (user.password !== password) {
         return done(null, false, { message: "Incorrect password." });
       }
-      console.log(`ログインユーザー${user.username}`);
+      console.log(`ログインユーザー${user.name}`);
       return done(null, user);
     });
   })

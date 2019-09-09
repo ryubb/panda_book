@@ -10,7 +10,7 @@ router.get("/signin", (req, res) => {
 
 router.post("/signin", (req, res) => {
   const newUser = new User({
-    username: req.body.username,
+    name: req.body.name,
     password: req.body.password
   });
   newUser.save(err => {
@@ -28,7 +28,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
     if (err || !req.session) return res.redirect("/login");
 
     req.session.user = {
-      username: user.username
+      name: user.name
     };
     return res.redirect("/");
   });

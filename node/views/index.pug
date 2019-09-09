@@ -6,17 +6,17 @@ html(lang="ja")
     h1 トップページ
     if loginUser
       div
-        p ようこそ！
+        p ようこそ！ #{loginUser.name} さん
         p
           a(href="timelines") タイムライン一覧
     else
       div
         p ユーザー登録をしましょう！
       div
-        p 
+        p
           a(href="/signin") ユーザー登録
-        p  
+        p
           a(href="/login") ログイン
     h2 ユーザー一覧
     each user in users
-      p #{user.username}
+      p #{user.name}
