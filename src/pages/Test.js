@@ -9,7 +9,6 @@ class Test extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return <p>test</p>;
   }
 }
