@@ -1,8 +1,10 @@
-import { reducer as userReducer } from "./user";
 import { combineReducers } from "redux";
+import { reducer as userReducer } from "./user";
+import { reducer as timelineReducer } from "./Timeline";
 
 const rootReducers = combineReducers({
-  ["users"]: userReducer
+  ["user"]: userReducer,
+  ["timeline"]: timelineReducer
 });
 
 export default rootReducers;

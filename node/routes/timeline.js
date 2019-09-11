@@ -9,7 +9,7 @@ router.get("/", function(req, res, next) {
     .populate("user")
     .exec((err, result) => {
       if (err) throw err;
-      res.render("timelines", { timelines: result });
+      res.json(result);
     });
 });
 

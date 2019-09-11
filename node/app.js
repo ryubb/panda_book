@@ -54,7 +54,7 @@ app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/", loginRouter);
 app.use("/users", usersRouter);
-app.use("/timelines", timelineRouter);
+app.use("/api/timelines", timelineRouter);
 // リレーションのサンプルあり
 app.use("/sake", sakeRouter);
 app.use("/api", apiRouter);
