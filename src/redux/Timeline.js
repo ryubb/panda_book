@@ -8,10 +8,18 @@ const initialState = {
   timelines: []
 };
 
+export const selectors = {
+  timelines: state => state["timeline"].timelines
+};
+
 export const actions = createActions({
   fetchTimelinesRequest: () => {},
   fetchTimelinesSuccess: payload => payload,
-  fetchTimelinesFailure: () => {}
+  fetchTimelinesFailure: () => {},
+
+  postTimelineRequest: () => {},
+  postTimelineSuccess: payload => payload,
+  postTimelineFailure: () => {}
 });
 
 export const reducer = handleActions(
@@ -23,7 +31,16 @@ export const reducer = handleActions(
       loaded: true,
       timelines: payload
     }),
-    [actions.fetchTimelinesFailure]: state => ({ ...state, loading: false })
+    [actions.fetchTimelinesFailure]: state => ({ ...state, loading: false }),
+
+    [actions.postTimelineRequest]: state => ({ ...state, loading: true }),
+    [actions.postTimelineSuccess]: (state, { payload }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      timelines: payload
+    }),
+    [actions.postTimelineFailure]: state => ({ ...state, loading: false })
   },
   initialState
 );
@@ -42,6 +59,23 @@ export const sagas = {
         yield put(actions.fetchTimelinesSuccess(payload));
       } catch (e) {
         yield put(actions.fetchTimelinesFailure());
+      }
+    }
+  },
+
+  *postTimeline(): SagaIterator {
+    while (true) {
+      yield take(actions.postTimelineRequest);
+
+      try {
+        const payload = yield call(() => {
+          return fetch("http://localhost:5000/api/timelines").then(res =>
+            res.json()
+          );
+        });
+        yield put(actions.postTimelineSuccess(payload));
+      } catch (e) {
+        yield put(actions.postTimelineFailure());
       }
     }
   }
