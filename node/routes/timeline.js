@@ -14,10 +14,8 @@ router.get("/", function(req, res, next) {
 });
 
 router.post("/post", function(req, res, next) {
-  // const loginUser = req.session && req.session.user;
   User.findOne({}, (err, result) => {
     if (err) throw err;
-    console.log(result);
     const timeline = new Timeline({
       content: req.body.content,
       user: result._id
@@ -25,8 +23,13 @@ router.post("/post", function(req, res, next) {
 
     timeline.save(err => {
       if (err) throw err;
-      console.log(timeline);
-      res.redirect("/timelines");
+      Timeline.findOne({ _id: timeline._id })
+        .populate("user")
+        .exec((err, result) => {
+          if (err) throw err;
+          console.log(result);
+          res.json(result);
+        });
     });
   });
 });

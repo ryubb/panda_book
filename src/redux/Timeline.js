@@ -17,7 +17,7 @@ export const actions = createActions({
   fetchTimelinesSuccess: payload => payload,
   fetchTimelinesFailure: () => {},
 
-  postTimelineRequest: () => {},
+  postTimelineRequest: payload => payload,
   postTimelineSuccess: payload => payload,
   postTimelineFailure: () => {}
 });
@@ -38,7 +38,7 @@ export const reducer = handleActions(
       ...state,
       loading: false,
       loaded: true,
-      timelines: payload
+      timelines: state.timelines.concat(payload)
     }),
     [actions.postTimelineFailure]: state => ({ ...state, loading: false })
   },
@@ -65,14 +65,17 @@ export const sagas = {
 
   *postTimeline(): SagaIterator {
     while (true) {
-      yield take(actions.postTimelineRequest);
+      const action = yield take(actions.postTimelineRequest);
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/timelines").then(res =>
-            res.json()
-          );
+          return fetch("http://localhost:5000/api/timelines/post", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(action.payload)
+          }).then(res => res.json());
         });
+        console.log(payload);
         yield put(actions.postTimelineSuccess(payload));
       } catch (e) {
         yield put(actions.postTimelineFailure());

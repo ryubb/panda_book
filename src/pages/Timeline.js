@@ -20,7 +20,6 @@ class Timeline extends React.Component {
 
   render() {
     const { timelines } = this.props;
-    console.log(this.props.test);
 
     return (
       <>
@@ -44,6 +43,7 @@ class Timeline extends React.Component {
           initialValues={{ content: "" }}
           onSubmit={values => {
             console.log(values);
+            this.props.postTimeline(values);
           }}
           render={({ values, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -69,7 +69,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTimelines: () => dispatch(actions.fetchTimelinesRequest())
+  fetchTimelines: () => dispatch(actions.fetchTimelinesRequest()),
+  postTimeline: form => dispatch(actions.postTimelineRequest(form))
 });
 
 export default connect(
