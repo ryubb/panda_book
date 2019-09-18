@@ -11,7 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import ImageIcon from "@material-ui/icons/Image";
-import { actions, selectors } from "../redux/Timeline";
+import { actions, selectors } from "../redux/modules/Timeline";
 
 class Timeline extends React.Component {
   componentDidMount() {

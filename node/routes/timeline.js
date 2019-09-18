@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../services/verify");
 
 const User = require("../schema/User");
 const Timeline = require("../schema/Timeline");
 
-router.get("/", function(req, res, next) {
+router.get("/", verifyToken, function(req, res, next) {
   Timeline.find({})
     .populate("user")
     .exec((err, result) => {

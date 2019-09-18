@@ -12,6 +12,7 @@ const HeaderItem = styled(Link)`
 
 const headerList = [
   { name: "トップへ", to: "/" },
+  { name: "ログイン", to: "/login" },
   { name: "タイムライン", to: "/timelines" }
 ];
 
