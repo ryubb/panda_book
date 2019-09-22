@@ -50,7 +50,7 @@ export const sagas = {
   *fetchTimelines(): SagaIterator {
     while (true) {
       yield take(actions.fetchTimelinesRequest);
-      const token = yield select(loginSelectors.token);
+      const token = localStorage.getItem("token");
 
       try {
         const payload = yield call(() => {
@@ -70,12 +70,16 @@ export const sagas = {
   *postTimeline(): SagaIterator {
     while (true) {
       const action = yield take(actions.postTimelineRequest);
+      const token = localStorage.getItem("token");
 
       try {
         const payload = yield call(() => {
           return fetch("http://localhost:5000/api/timelines/post", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer: ${token}`
+            },
             body: JSON.stringify(action.payload)
           }).then(res => res.json());
         });

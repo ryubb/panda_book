@@ -1,39 +1,41 @@
 const express = require("express");
-const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const router = express.Router();
-const verifyToken = require("../services/verify");
 
 const User = require("../schema/User");
 
-router.get("/signin", verifyToken, (req, res) => {
-  return res.render("signin");
-});
-
-router.post("/signin", (req, res) => {
+router.post("/signup", (req, res) => {
+  const hashed_password = bcrypt.hashSync(req.body.password, 10);
   const newUser = new User({
-    name: req.body.name,
-    password: req.body.password
+    email: req.body.email,
+    password: hashed_password
   });
+  console.log(newUser);
   newUser.save(err => {
     if (err) throw err;
-    return res.redirect("/");
+    console.log("signup success!!");
+    return res.status(200);
   });
 });
 
 router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err || !user) {
+      console.log("invalid email");
       return res.status(500).json({ message: "存在しないメールアドレスです" });
     }
-    if (user.password !== req.body.password) {
+    if (bcrypt.compareSync(req.body.password, user.password)) {
+      console.log("invalid password");
       return res.status(500).json({ message: "パスワードが間違ってます" });
     }
-    jwt.sign({ user }, "pandabook", { expiresIn: 60 }, (err, token) => {
+    jwt.sign({ user }, "pandabook", { expiresIn: 1000 }, (err, token) => {
       if (err) {
+        console.log("fail to create token");
         return res.status(500).json({ message: "tokenの生成に失敗しました" });
       }
       if (token) {
+        console.log("login success!");
         return res.status(200).json({ token: token });
       }
     });

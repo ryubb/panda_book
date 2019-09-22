@@ -9,33 +9,34 @@ export const selectors = {
 };
 
 export const actions = createActions({
-  loginRequest: payload => payload,
-  loginSuccess: payload => payload,
-  loginFailure: () => {}
+  signupRequest: payload => payload,
+  signupSuccess: payload => payload,
+  signupFailure: () => {}
 });
 
 export const reducer = handleActions(
   {
-    [actions.loginRequest]: state => ({ ...state, loading: true }),
-    [actions.loginSuccess]: (state, { payload }) => ({
+    [actions.signupRequest]: state => ({ ...state, loading: true }),
+    [actions.signupSuccess]: (state, { payload }) => ({
       ...state,
       loading: false,
       loaded: true,
       token: payload.token
     }),
-    [actions.loginFailure]: state => ({ ...state, loading: false })
+    [actions.signupFailure]: state => ({ ...state, loading: false })
   },
   initialState
 );
 
 export const sagas = {
-  *login(): SagaIterator {
+  *signup(): SagaIterator {
     while (true) {
-      const action = yield take(actions.loginRequest);
+      const action = yield take(actions.signupRequest);
+      console.log(action.payload);
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/login", {
+          return fetch("http://localhost:5000/api/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(action.payload)
@@ -45,9 +46,9 @@ export const sagas = {
         if (payload && payload.token) {
           localStorage.setItem("token", payload.token);
         }
-        yield put(actions.loginSuccess(payload));
+        yield put(actions.signupSuccess(payload));
       } catch (e) {
-        yield put(actions.loginFailure());
+        yield put(actions.signupFailure());
       }
     }
   }
