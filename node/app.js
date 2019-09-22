@@ -9,6 +9,7 @@ const indexRouter = require("./routes/index");
 const loginRouter = require("./routes/login");
 const usersRouter = require("./routes/users");
 const sakeRouter = require("./routes/sake");
+const dbRouter = require("./routes/db/dbRouter");
 const timelineRouter = require("./routes/timeline");
 const apiRouter = require("./routes/api/apiRouter");
 
@@ -18,7 +19,6 @@ mongoose.connect("mongodb://localhost:27017/chatapp", err => {
   if (err) {
     console.log(err);
   } else {
-    // ここにMockユーザーを入れれそう
     console.log("successfully connected to MongoDB.");
   }
 });
@@ -35,6 +35,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/db", dbRouter);
 app.use("/api", loginRouter);
 app.use("/users", usersRouter);
 app.use("/api/timelines", timelineRouter);
