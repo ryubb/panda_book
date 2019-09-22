@@ -1,6 +1,7 @@
 import { take, put, call } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 import { createActions, handleActions } from "redux-actions";
+import axios from "../../services/apiService";
 
 const initialState = { token: "" };
 
@@ -32,15 +33,12 @@ export const sagas = {
   *signup(): SagaIterator {
     while (true) {
       const action = yield take(actions.signupRequest);
-      console.log(action.payload);
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(action.payload)
-          }).then(res => res.json());
+          return axios
+            .post("/api/signup", action.payload)
+            .then(res => res.data);
         });
 
         if (payload && payload.token) {

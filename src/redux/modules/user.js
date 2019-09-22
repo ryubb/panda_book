@@ -1,6 +1,7 @@
 import { take, put, call } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 import { createActions, handleActions } from "redux-actions";
+import axios from "../../services/apiService";
 
 const initialState = {
   loading: false,
@@ -35,9 +36,7 @@ export const sagas = {
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/users").then(res =>
-            res.json()
-          );
+          return axios.get("api/users").then(res => res.data);
         });
         yield put(actions.fetchUsersSuccess(payload));
       } catch (e) {

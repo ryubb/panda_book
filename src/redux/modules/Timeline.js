@@ -1,6 +1,7 @@
 import { take, put, call, select } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 import { createActions, handleActions } from "redux-actions";
+import axios from "../../services/apiService";
 import { selectors as loginSelectors } from "./Login";
 
 const initialState = {
@@ -50,16 +51,13 @@ export const sagas = {
   *fetchTimelines(): SagaIterator {
     while (true) {
       yield take(actions.fetchTimelinesRequest);
-      const token = localStorage.getItem("token");
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/timelines", {
-            headers: { Authorization: `Bearer: ${token}` }
-          }).then(res => res.json());
+          return axios.get("/api/timelines").then(res => res.data);
         });
 
-        if (payload.message === "Unauthorized") throw "err";
+        if (payload.message === "Unauthorized") throw "Unauthorized";
         yield put(actions.fetchTimelinesSuccess(payload));
       } catch (e) {
         yield put(actions.fetchTimelinesFailure());
@@ -70,18 +68,12 @@ export const sagas = {
   *postTimeline(): SagaIterator {
     while (true) {
       const action = yield take(actions.postTimelineRequest);
-      const token = localStorage.getItem("token");
 
       try {
         const payload = yield call(() => {
-          return fetch("http://localhost:5000/api/timelines/post", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer: ${token}`
-            },
-            body: JSON.stringify(action.payload)
-          }).then(res => res.json());
+          return axios
+            .post("/api/timelines/post", action.payload)
+            .then(res => res.data);
         });
         console.log(payload);
         yield put(actions.postTimelineSuccess(payload));

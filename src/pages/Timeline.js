@@ -41,10 +41,7 @@ class Timeline extends React.Component {
         </List>
         <Formik
           initialValues={{ content: "" }}
-          onSubmit={values => {
-            console.log(values);
-            this.props.postTimeline(values);
-          }}
+          onSubmit={values => this.props.postTimeline(values)}
           render={({ values, handleChange, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <FormControl>
