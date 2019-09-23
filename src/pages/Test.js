@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { actions as userActions } from "../redux/modules/user";
+import { actions as userActions } from "../redux/modules/User";
 
 class Test extends React.Component {
   componentDidMount() {

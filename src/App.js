@@ -4,6 +4,7 @@ import LauoutRoute from "./layout/LayoutRoute";
 import Test from "./pages/Test";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import User from "./pages/User";
 import Timeline from "./pages/Timeline";
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
       <LauoutRoute path="/" component={Test} exact />
       <LauoutRoute path="/signup" component={Signup} exact />
       <LauoutRoute path="/login" component={Login} exact />
+      <LauoutRoute path="/users" component={User} />
       <LauoutRoute path="/timelines" component={Timeline} />
     </Switch>
   );

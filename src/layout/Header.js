@@ -14,6 +14,7 @@ const headerList = [
   { name: "トップへ", to: "/" },
   { name: "新規登録", to: "/signup" },
   { name: "ログイン", to: "/login" },
+  { name: "ユーザー一覧", to: "/users" },
   { name: "タイムライン", to: "/timelines" }
 ];
 

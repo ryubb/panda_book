@@ -9,6 +9,10 @@ const initialState = {
   users: []
 };
 
+export const selectors = {
+  users: state => state["user"].users
+};
+
 export const actions = createActions({
   fetchUsersRequest: () => {},
   fetchUsersSuccess: payload => payload,
@@ -36,7 +40,7 @@ export const sagas = {
 
       try {
         const payload = yield call(() => {
-          return axios.get("api/users").then(res => res.data);
+          return axios.get("api/users/get").then(res => res.data);
         });
         yield put(actions.fetchUsersSuccess(payload));
       } catch (e) {
