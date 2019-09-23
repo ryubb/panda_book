@@ -1,16 +1,13 @@
 const express = require("express");
-const router = express.Router();
 
-const User = require("../../schema/User");
+const loginRouter = require("./login");
+const usersRouter = require("./users");
+const timelineRouter = require("./timeline");
 
-/* GET home page. */
-router.get("/users", function(req, res, next) {
-  User.find({}, (err, result) => {
-    if (err) throw err;
+const app = express();
 
-    console.log(result);
-    res.json(result);
-  });
-});
+app.use("/", loginRouter);
+app.use("/users", usersRouter);
+app.use("/timelines", timelineRouter);
 
-module.exports = router;
+module.exports = app;
