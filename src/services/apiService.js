@@ -6,7 +6,7 @@ const axios = axiosbase.create({
   headers: {
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
-    Authorization: `Bearer: ${token}`
+    Authorization: `Bearer ${token}`
   },
   responseType: "json"
 });

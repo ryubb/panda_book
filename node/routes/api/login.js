@@ -25,7 +25,7 @@ router.post("/login", (req, res) => {
       console.log("invalid email");
       return res.status(500).json({ message: "存在しないメールアドレスです" });
     }
-    if (bcrypt.compareSync(req.body.password, user.password)) {
+    if (!bcrypt.compareSync(req.body.password, user.hashed_password)) {
       console.log("invalid password");
       return res.status(500).json({ message: "パスワードが間違ってます" });
     }
