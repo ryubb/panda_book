@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 const Message = mongoose.Schema({
-  username: String,
-  message: String,
+  from_user: { type: Object, ref: "User" },
+  chat_room: { type: Object, ref: "ChatRoom" },
+  content: String,
   date: { type: Date, default: new Date() }
 });
 
