@@ -1,13 +1,17 @@
 ## 起動の仕方
 ### nodeの起動
 DEBUG=my-application ./node/bin/www
+→yarn start:node
 
 ### reactの起動
 yarn start:front
 
-### mockデータのimport
-mongoimport -h localhost:27017 --db chatapp --collection users --drop --jsonArray --file node/db/mock/users.json
-mongoimport -h localhost:27017 --db chatapp --collection saketypes --drop --jsonArray --file node/db/mock/sake-types.json
+### sequelize-cliの使い方
+npx sequelize-cli [コマンド]
 
-### mongodbのjsファイル実行
-mongo --quiet node/db/mock/comand_test.js
+### DEの作成の仕方
+npx sequelize db:create
+ex) npx sequelize model:create --underscored --name user --attributes "user_name:string,age:integer"
+
+### migration
+npx sequelize db:migrate
