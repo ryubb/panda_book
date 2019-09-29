@@ -3,14 +3,13 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const logger = require("morgan");
-const mysql = require("mysql");
-const mongoose = require("mongoose");
-const dbConfig = require("./db/config");
+const mysql = require("mysql2");
+const dbConfig = require("./config/dbConfig");
 
-const indexRouter = require("./routes/index");
-const sakeRouter = require("./routes/sake");
+// const indexRouter = require("./routes/index");
+// const sakeRouter = require("./routes/sake");
 const dbRouter = require("./routes/db/dbRouter");
-const apiRouter = require("./routes/api/apiRouter");
+// const apiRouter = require("./routes/api/apiRouter");
 
 const app = express();
 
@@ -26,14 +25,6 @@ connection.connect(function(err) {
 
   console.log("connected as id " + connection.threadId);
 });
-
-// mongoose.connect("mongodb://localhost:27017/chatapp", err => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("successfully connected to MongoDB.");
-//   }
-// });
 
 // CORSを許可する
 app.use(cors());
