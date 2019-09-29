@@ -1,0 +1,15 @@
+{
+  "sqltools.connections": [
+    {
+      "database": "panda_book",
+      "dialect": "MySQL",
+      "isActive": false,
+      "isConnected": false,
+      "name": "pa",
+      "password": "Ryubb15312@",
+      "port": 3306,
+      "server": "localhost",
+      "username": "root"
+    }
+  ]
+}

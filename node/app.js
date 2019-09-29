@@ -3,7 +3,9 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const logger = require("morgan");
+const mysql = require("mysql");
 const mongoose = require("mongoose");
+const dbConfig = require("./db/config");
 
 const indexRouter = require("./routes/index");
 const sakeRouter = require("./routes/sake");
@@ -12,13 +14,26 @@ const apiRouter = require("./routes/api/apiRouter");
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/chatapp", err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("successfully connected to MongoDB.");
-  }
+const connection = mysql.createConnection({
+  ...dbConfig
 });
+
+connection.connect(function(err) {
+  if (err) {
+    console.error("error connecting: " + err.stack);
+    return;
+  }
+
+  console.log("connected as id " + connection.threadId);
+});
+
+// mongoose.connect("mongodb://localhost:27017/chatapp", err => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("successfully connected to MongoDB.");
+//   }
+// });
 
 // CORSを許可する
 app.use(cors());
@@ -31,10 +46,10 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/api", apiRouter);
+// app.use("/", indexRouter);
+// app.use("/api", apiRouter);
 app.use("/db", dbRouter);
-app.use("/sake", sakeRouter); // リレーションのサンプルあり
+// app.use("/sake", sakeRouter); // リレーションのサンプルあり
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

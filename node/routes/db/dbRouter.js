@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../../schema/User");
+const mysql = require("mysql");
+const dbConfig = require("../../db/config");
 
 const users = [
   { name: "test1", email: "test1@example.com", password: "Test1234" },
@@ -14,6 +16,16 @@ const users = [
   { name: "test8", email: "test8@example.com", password: "Test1234" },
   { name: "test9", email: "test9@example.com", password: "Test1234" }
 ];
+
+router.get("/mysql_test", (req, res) => {
+  const connection = mysql.createConnection({
+    ...dbConfig
+  });
+  connection.query(
+    "insert into users values('mysql_test', 'mysql_test@example.com', 'Test1234');"
+  );
+  res.status(200).json("success");
+});
 
 router.get("/user", (req, res) => {
   users.forEach(user => {
