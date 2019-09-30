@@ -21,6 +21,9 @@ npx sequelize db:migrate:undo:all
 npx sequelize seed:create --name my-seed-file
 npx sequelize db:seed:all
 
+### 魔法のコマンド
+npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all
+
 #### メモ
 $ sequelize db:drop # dbを落とす
 $ sequelize db:create # dbを作成

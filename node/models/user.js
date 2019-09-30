@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   user.associate = models => {
     user.hasMany(models.timeline, { foreignKey: "user_id" });
     user.hasMany(models.room_participant, { foreignKey: "user_id" });
+    user.hasMany(models.message, { foreignKey: "user_id" });
   };
 
   user.getAll = () => {
