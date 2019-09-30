@@ -11,8 +11,29 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true
     }
   );
-  user.associate = function(models) {
+  user.associate = models => {
     user.hasMany(models.timeline, { foreignKey: "user_id" });
   };
+
+  user.getAll = () => {
+    return user.findAll({});
+  };
+
+  user.getOneById = id => {
+    return user.findOne({ where: { id: id } });
+  };
+
+  user.getOneByEmail = email => {
+    return user.findOne({ where: { email: email } });
+  };
+
+  user.createUser = data => {
+    return user.create({
+      name: data.name,
+      email: data.email,
+      hashed_password: data.hashed_password
+    });
+  };
+
   return user;
 };

@@ -7,20 +7,20 @@ const db = require("../../models/index");
 
 router.post("/signup", (req, res) => {
   const hashed_password = bcrypt.hashSync(req.body.password, 10);
+  let data = Object.assign({}, req.body);
+  data = Object.assign(data, { hashed_password });
+
   db.user
-    .create({
-      name: req.body.name,
-      email: req.body.email,
-      hashed_password: hashed_password
-    })
+    .createUser(data)
     .then(createdUser => {
       // ログイン処理
       jwtSign(createdUser, res);
-    });
+    })
+    .catch(err => res.status(500).json(err));
 });
 
 router.post("/login", (req, res) => {
-  db.user.findOne({ where: { email: req.body.email } }).then(user => {
+  db.user.getOneByEmail(req.body.email).then(user => {
     // 入力したemailのユーザーの存在性チェック
     if (!user) {
       console.log("invalid email");
