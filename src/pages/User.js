@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { actions, selectors } from "../redux/modules/User";
+import { actions as userActions, selectors } from "../redux/modules/User";
+import { actions as roomActions } from "../redux/modules/Room";
 
 const UserWrapper = styled.div`
   display: flex;
@@ -11,6 +11,11 @@ const UserWrapper = styled.div`
 class User extends React.Component {
   componentDidMount() {
     this.props.fetchUsers();
+  }
+
+  onClick(e, toUserId) {
+    e.preventDefault();
+    this.props.fetchRoom(toUserId);
   }
 
   render() {
@@ -23,9 +28,11 @@ class User extends React.Component {
           {users &&
             users.map(user => {
               return (
-                <UserWrapper key={user._id}>
+                <UserWrapper key={user.id}>
                   <p>{user.name}</p>
-                  <Link to={`/messages/${user._id}`}>チャットへ</Link>
+                  <a href="/" onClick={e => this.onClick(e, user.id)}>
+                    チャットへ
+                  </a>
                 </UserWrapper>
               );
             })}
@@ -40,7 +47,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchUsers: () => dispatch(actions.fetchUsersRequest())
+  fetchUsers: () => dispatch(userActions.fetchUsersRequest()),
+  fetchRoom: toUserId => dispatch(roomActions.fetchRoomRequest(toUserId))
 });
 
 export default connect(
