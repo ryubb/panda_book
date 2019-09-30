@@ -15,11 +15,12 @@ const MainContent = styled.div`
   width: 100%;
 `;
 
-const LayoutRoute = ({ component, ...rest }) => {
+// eslint-disable-next-line react/prop-types
+const LayoutRoute = ({ component, path, exact }) => {
   const ChildComponent = component;
 
   return (
-    <Route {...rest}>
+    <Route path={path} exact={exact}>
       <MainLayout>
         <Header />
         <MainContent>
