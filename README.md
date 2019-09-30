@@ -15,3 +15,4 @@ ex) npx sequelize model:create --underscored --name user --attributes "user_name
 
 ### migration
 npx sequelize db:migrate
+npx sequelize db:migrate:undo:all

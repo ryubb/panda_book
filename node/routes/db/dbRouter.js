@@ -9,7 +9,9 @@ router.get("/mysql_test", (req, res) => {
     console.log(instances); // usersの中身を全て取得した結果
   });
 
-  // // create
+  console.log("以下create user");
+
+  // create
   db.user
     .create({
       username: "#####",
