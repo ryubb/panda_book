@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   timeline.associate = function(models) {
-    // associations can be defined here
+    timeline.belongsTo(models.user);
   };
   return timeline;
 };

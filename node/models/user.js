@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   user.associate = function(models) {
-    // associations can be defined here
-    console.log(models);
+    user.hasMany(models.timeline, { foreignKey: "user_id" });
   };
   return user;
 };

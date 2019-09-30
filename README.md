@@ -16,3 +16,15 @@ ex) npx sequelize model:create --underscored --name user --attributes "user_name
 ### migration
 npx sequelize db:migrate
 npx sequelize db:migrate:undo:all
+
+### seedファイルの作り方
+npx sequelize seed:create --name my-seed-file
+npx sequelize db:seed:all
+
+#### メモ
+$ sequelize db:drop # dbを落とす
+$ sequelize db:create # dbを作成
+$ sequelize db:migrate # migrate実行
+$ sequelize db:migrate:undo:all # 実行されたmigrateを全て取り消し
+$ sequelize db:seed:all # 設定されていたseedファイルをmigrate
+$ seqeulize db:seed:undo:all # seedファイルのmigrateを全て取り消し

@@ -14,8 +14,8 @@ router.post("/signup", (req, res) => {
       hashed_password: hashed_password
     })
     .then(createdUser => {
-      console.log(createdUser); // 作成されたuserインスタンスの詳細
-      return res.status(200).json(createdUser);
+      // ログイン処理
+      jwtSign(createdUser, res);
     });
 });
 
@@ -34,17 +34,21 @@ router.post("/login", (req, res) => {
     }
 
     // ログイン処理
-    jwt.sign({ user }, "pandabook", { expiresIn: 1000 }, (err, token) => {
-      if (err) {
-        console.log("fail to create token");
-        return res.status(500).json({ message: "tokenの生成に失敗しました" });
-      }
-      if (token) {
-        console.log("login success!");
-        return res.status(200).json({ token: token });
-      }
-    });
+    jwtSign(user, res);
   });
 });
+
+const jwtSign = (user, res) => {
+  jwt.sign({ user }, "pandabook", { expiresIn: 10000 }, (err, token) => {
+    if (err) {
+      console.log("fail to create token");
+      return res.status(500).json({ message: "tokenの生成に失敗しました" });
+    }
+    if (token) {
+      console.log("login success!");
+      return res.status(200).json({ token: token });
+    }
+  });
+};
 
 module.exports = router;
