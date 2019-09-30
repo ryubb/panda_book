@@ -6,10 +6,9 @@ const logger = require("morgan");
 const mysql = require("mysql2");
 const dbConfig = require("./config/dbConfig");
 
-// const indexRouter = require("./routes/index");
-// const sakeRouter = require("./routes/sake");
+const indexRouter = require("./routes/index");
 const dbRouter = require("./routes/db/dbRouter");
-// const apiRouter = require("./routes/api/apiRouter");
+const apiRouter = require("./routes/api/apiRouter");
 
 const app = express();
 
@@ -37,10 +36,9 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use("/", indexRouter);
-// app.use("/api", apiRouter);
+app.use("/", indexRouter);
+app.use("/api", apiRouter);
 app.use("/db", dbRouter);
-// app.use("/sake", sakeRouter); // リレーションのサンプルあり
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

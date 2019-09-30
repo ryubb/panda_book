@@ -3,32 +3,37 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 
-const User = require("../../schema/User");
+const db = require("../../models/index");
 
 router.post("/signup", (req, res) => {
   const hashed_password = bcrypt.hashSync(req.body.password, 10);
-  const newUser = new User({
-    email: req.body.email,
-    password: hashed_password
-  });
-  console.log(newUser);
-  newUser.save(err => {
-    if (err) throw err;
-    console.log("signup success!!");
-    return res.status(200);
-  });
+  db.user
+    .create({
+      name: req.body.name,
+      email: req.body.email,
+      hashed_password: hashed_password
+    })
+    .then(createdUser => {
+      console.log(createdUser); // 作成されたuserインスタンスの詳細
+      return res.status(200).json(createdUser);
+    });
 });
 
 router.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err || !user) {
+  db.user.findOne({ where: { email: req.body.email } }).then(user => {
+    // 入力したemailのユーザーの存在性チェック
+    if (!user) {
       console.log("invalid email");
       return res.status(500).json({ message: "存在しないメールアドレスです" });
     }
+
+    // 入力したpasswordがあっているかチェック
     if (!bcrypt.compareSync(req.body.password, user.hashed_password)) {
       console.log("invalid password");
       return res.status(500).json({ message: "パスワードが間違ってます" });
     }
+
+    // ログイン処理
     jwt.sign({ user }, "pandabook", { expiresIn: 1000 }, (err, token) => {
       if (err) {
         console.log("fail to create token");
