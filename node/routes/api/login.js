@@ -46,7 +46,9 @@ const jwtSign = (user, res) => {
     }
     if (token) {
       console.log("login success!");
-      return res.status(200).json({ token: token });
+      let loginUser = Object.assign({}, user.defaultValues);
+      loginUser.token = token;
+      return res.status(200).json({ user: user, token: token });
     }
   });
 };

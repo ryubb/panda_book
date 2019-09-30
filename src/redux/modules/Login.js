@@ -3,7 +3,12 @@ import { SagaIterator } from "redux-saga";
 import { createActions, handleActions } from "redux-actions";
 import axios from "../../services/apiService";
 
-const initialState = { token: "" };
+const initialState = {
+  loading: false,
+  loaded: false,
+  token: "",
+  loginUser: {}
+};
 
 export const selectors = {
   token: state => state["login"].token
@@ -22,7 +27,8 @@ export const reducer = handleActions(
       ...state,
       loading: false,
       loaded: true,
-      token: payload.token
+      token: payload.token,
+      loginUser: payload.user
     }),
     [actions.loginFailure]: state => ({ ...state, loading: false })
   },
