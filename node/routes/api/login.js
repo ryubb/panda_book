@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const verifyToken = require("../../services/verify");
 
 const db = require("../../models/index");
 
@@ -36,6 +37,17 @@ router.post("/login", (req, res) => {
     // ログイン処理
     jwtSign(user, res);
   });
+});
+
+router.get("/login_user", verifyToken, (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "pandabook");
+
+  if (decoded && Object.keys(decoded.user).length > 0) {
+    return res.status(200).json(decoded.user);
+  } else {
+    return res.status(500).json("サーバーエラーが発生しました。");
+  }
 });
 
 const jwtSign = (user, res) => {

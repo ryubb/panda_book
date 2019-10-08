@@ -12,11 +12,13 @@ import {
 const Mymessage = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 `;
 
 const Yourmessage = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
 `;
 
 class Message extends React.Component {
@@ -30,16 +32,21 @@ class Message extends React.Component {
 
   render() {
     const { loginUser, messages } = this.props;
-    console.log(loginUser);
 
     return (
       messages &&
-      messages.map(message => (
-        <div key={message.id}>
-          <p>user: {message.userId}</p>
-          <p>content: {message.content}</p>
-        </div>
-      ))
+      messages.map(message =>
+        loginUser && loginUser.id === message.userId ? (
+          <Mymessage key={message.id}>
+            <p>content: {message.content}</p>
+          </Mymessage>
+        ) : (
+          <Yourmessage key={message.id}>
+            <p>user: {message.userId}</p>
+            <p>content: {message.content}</p>
+          </Yourmessage>
+        )
+      )
     );
   }
 }

@@ -18,7 +18,11 @@ export const selectors = {
 export const actions = createActions({
   loginRequest: payload => payload,
   loginSuccess: payload => payload,
-  loginFailure: () => {}
+  loginFailure: () => {},
+
+  fetchLoginUserRequest: () => ({}),
+  fetchLoginUserSuccess: payload => payload,
+  fetchLoginUserFailure: () => {}
 });
 
 export const reducer = handleActions(
@@ -31,7 +35,16 @@ export const reducer = handleActions(
       token: payload.token,
       loginUser: payload.user
     }),
-    [actions.loginFailure]: state => ({ ...state, loading: false })
+    [actions.loginFailure]: state => ({ ...state, loading: false }),
+
+    [actions.fetchLoginUserRequest]: state => ({ ...state, loading: true }),
+    [actions.fetchLoginUserSuccess]: (state, { payload }) => ({
+      ...state,
+      loading: false,
+      loaded: true,
+      loginUser: payload
+    }),
+    [actions.fetchLoginUserFailure]: state => ({ ...state, loading: false })
   },
   initialState
 );
@@ -52,6 +65,29 @@ export const sagas = {
         yield put(actions.loginSuccess(payload));
       } catch (e) {
         yield put(actions.loginFailure());
+      }
+    }
+  },
+
+  *fetchLoginUser(): SagaIterator {
+    while (true) {
+      yield take(actions.fetchLoginUserRequest);
+      console.log("test");
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("tokenがありません。");
+
+        const payload = yield call(() => {
+          return axios
+            .get("/api/login_user", {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(res => res.data);
+        });
+
+        yield put(actions.fetchLoginUserSuccess(payload));
+      } catch (e) {
+        yield put(actions.fetchLoginUserFailure());
       }
     }
   }

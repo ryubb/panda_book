@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
@@ -21,7 +21,13 @@ const MainContent = styled.div`
 `;
 
 // eslint-disable-next-line react/prop-types
-const LayoutRoute = ({ component, path, exact }) => {
+const LayoutRoute = ({ loginUser, fetchLoginUser, component, path, exact }) => {
+  useEffect(() => {
+    if (Object.keys(loginUser).length <= 0) {
+      return fetchLoginUser();
+    }
+  }, []);
+
   const ChildComponent = component;
 
   return (

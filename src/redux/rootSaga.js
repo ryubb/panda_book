@@ -12,6 +12,7 @@ export default function* rootSaga(history) {
     fork(userSagas.fetchUsers),
     fork(signupSagas.signup),
     fork(loginSagas.login),
+    fork(loginSagas.fetchLoginUser),
     fork(timelineSagas.fetchTimelines),
     fork(timelineSagas.postTimeline),
     fork(roomSagas.fetchRoom),
