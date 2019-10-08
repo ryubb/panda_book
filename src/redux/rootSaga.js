@@ -4,6 +4,7 @@ import { sagas as signupSagas } from "./modules/Signup";
 import { sagas as loginSagas } from "./modules/Login";
 import { sagas as timelineSagas } from "./modules/Timeline";
 import { sagas as roomSagas } from "./modules/Room";
+import { sagas as messageSagas } from "./modules/Message";
 
 export default function* rootSaga(history) {
   yield setContext({ history });
@@ -13,6 +14,7 @@ export default function* rootSaga(history) {
     fork(loginSagas.login),
     fork(timelineSagas.fetchTimelines),
     fork(timelineSagas.postTimeline),
-    fork(roomSagas.fetchRoom)
+    fork(roomSagas.fetchRoom),
+    fork(messageSagas.fetchMessages)
   ]);
 }

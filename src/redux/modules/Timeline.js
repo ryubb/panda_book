@@ -54,7 +54,12 @@ export const sagas = {
 
       try {
         const payload = yield call(() => {
-          return axios.get("/api/timelines").then(res => res.data);
+          const token = localStorage.getItem("token");
+          return axios
+            .get("/api/timelines", {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(res => res.data);
         });
 
         if (payload.message === "Unauthorized") throw "Unauthorized";

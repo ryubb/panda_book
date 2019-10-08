@@ -1,7 +1,12 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import Header from "./Header";
+import {
+  actions as loginActions,
+  selectors as loginSelectors
+} from "../redux/modules/Login";
 
 const MainLayout = styled.div`
   display: flex;
@@ -31,4 +36,15 @@ const LayoutRoute = ({ component, path, exact }) => {
   );
 };
 
-export default LayoutRoute;
+const mapStateToProps = state => ({
+  loginUser: loginSelectors.loginUser(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchLoginUser: () => dispatch(loginActions.fetchLoginUserRequest())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LayoutRoute);

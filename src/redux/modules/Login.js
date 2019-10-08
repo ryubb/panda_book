@@ -11,7 +11,8 @@ const initialState = {
 };
 
 export const selectors = {
-  token: state => state["login"].token
+  token: state => state["login"].token,
+  loginUser: state => state["login"].loginUser
 };
 
 export const actions = createActions({

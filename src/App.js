@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import User from "./pages/User";
 import Timeline from "./pages/Timeline";
+import Message from "./pages/Message";
 
 const App = () => {
   return (
@@ -13,8 +14,9 @@ const App = () => {
       <LayoutRoute path="/" component={Test} exact />
       <LayoutRoute path="/signup" component={Signup} exact />
       <LayoutRoute path="/login" component={Login} exact />
-      <LayoutRoute path="/users" component={User} />
-      <LayoutRoute path="/timelines" component={Timeline} />
+      <LayoutRoute path="/users" component={User} exact />
+      <LayoutRoute path="/timelines" component={Timeline} exact />
+      <LayoutRoute path="/messages/:roomId" component={Message} exact />
     </Switch>
   );
 };

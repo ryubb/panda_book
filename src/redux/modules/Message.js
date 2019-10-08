@@ -6,50 +6,51 @@ import axios from "../../services/apiService";
 const initialState = {
   loading: false,
   loaded: false,
-  users: []
+  messages: []
 };
 
 export const selectors = {
-  users: state => state["user"].users
+  messages: state => state["message"].messages
 };
 
 export const actions = createActions({
-  fetchUsersRequest: () => {},
-  fetchUsersSuccess: payload => payload,
-  fetchUsersFailure: () => {}
+  fetchMessagesRequest: payload => payload,
+  fetchMessagesSuccess: payload => payload,
+  fetchMessagesFailure: () => {}
 });
 
 export const reducer = handleActions(
   {
-    [actions.fetchUsersRequest]: state => ({ ...state, loading: true }),
-    [actions.fetchUsersSuccess]: (state, { payload }) => ({
+    [actions.fetchMessagesRequest]: state => ({ ...state, loading: true }),
+    [actions.fetchMessagesSuccess]: (state, { payload }) => ({
       ...state,
       loading: false,
       loaded: true,
-      users: payload
+      messages: payload
     }),
-    [actions.fetchUsersFailure]: state => ({ ...state, loading: false })
+    [actions.fetchMessagesFailure]: state => ({ ...state, loading: false })
   },
   initialState
 );
 
 export const sagas = {
-  *fetchUsers(): SagaIterator {
+  *fetchMessages(): SagaIterator {
     while (true) {
-      yield take(actions.fetchUsersRequest);
+      const action = yield take(actions.fetchMessagesRequest);
 
       try {
         const payload = yield call(() => {
           const token = localStorage.getItem("token");
           return axios
-            .get("api/users/get", {
+            .get(`/api/messages/${action.payload}`, {
               headers: { Authorization: `Bearer ${token}` }
             })
             .then(res => res.data);
         });
-        yield put(actions.fetchUsersSuccess(payload));
+
+        yield put(actions.fetchMessagesSuccess(payload));
       } catch (e) {
-        yield put(actions.fetchUsersFailure());
+        yield put(actions.fetchMessagesFailure());
       }
     }
   }

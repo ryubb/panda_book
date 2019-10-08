@@ -34,18 +34,21 @@ export const sagas = {
     while (true) {
       const action = yield take(actions.fetchRoomRequest);
       const history = yield getContext("history");
-      console.log(history);
 
       try {
+        const token = localStorage.getItem("token");
         const payload = yield call(() => {
           return axios
-            .get(`/api/rooms/${action.payload}`)
+            .get(`/api/rooms/${action.payload}`, {
+              headers: { Authorization: `Bearer ${token}` }
+            })
             .then(res => res.data);
         });
 
         const roomId = payload.room_id;
+
         if (roomId) {
-          yield call(history.push, `/message/${roomId}`);
+          yield call(history.push, `/messages/${roomId}`);
         } else {
           throw new Error(
             "room_idが存在しません。APIサーバーの返り値が誤っている可能性があります"
