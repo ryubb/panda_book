@@ -72,7 +72,6 @@ export const sagas = {
   *fetchLoginUser(): SagaIterator {
     while (true) {
       yield take(actions.fetchLoginUserRequest);
-      console.log("test");
       try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("tokenがありません。");
