@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../../services/verify");
+const jwt = require("jsonwebtoken");
 
 const db = require("../../models/index");
 
@@ -11,20 +12,19 @@ router.get("/:room_id", verifyToken, (req, res) => {
     .then(messages => res.status(200).json(messages));
 });
 
-// router.post("/:room_id", (req, res) => {
-//   const token = req.headers.authorization.split(" ")[1];
-//   const decoded = jwt.verify(token, "pandabook");
+router.post("/:room_id", (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "pandabook");
+  const data = {
+    roomId: req.params.room_id,
+    userId: decoded.user.id,
+    content: req.body.content
+  };
 
-//   const newMessage = new Message({
-//     from_user: decoded.user._id,
-//     chat_room: req.params,
-//     content: req.body.content
-//   });
-
-//   newMessage.save(err => {
-//     if (err) throw new Error(err);
-//     return res.status(200).json(newMessage);
-//   });
-// });
+  db.message
+    .createMessage(data)
+    .then(message => res.status(200).json(message))
+    .catch(err => res.status(200).json(err));
+});
 
 module.exports = router;

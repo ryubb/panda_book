@@ -20,5 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     return message.findAll({ where: { room_id: roomId } });
   };
 
+  message.createMessage = data => {
+    return message.create({
+      room_id: data.roomId,
+      user_id: data.userId,
+      content: data.content
+    });
+  };
+
   return message;
 };
