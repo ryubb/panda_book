@@ -16,6 +16,7 @@ export default function* rootSaga(history) {
     fork(timelineSagas.fetchTimelines),
     fork(timelineSagas.postTimeline),
     fork(roomSagas.fetchRoom),
-    fork(messageSagas.fetchMessages)
+    fork(messageSagas.fetchMessages),
+    fork(messageSagas.postMessage)
   ]);
 }
