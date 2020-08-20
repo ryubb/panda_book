@@ -19,7 +19,7 @@
     "@material-ui/icons": "^4.4.1",
     "axios": "^0.19.0",
     "babel-eslint": "10.0.2",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bug": "^1.2.0",
     "connected-react-router": "^6.5.2",
